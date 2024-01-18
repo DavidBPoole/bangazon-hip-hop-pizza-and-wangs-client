@@ -1,8 +1,8 @@
 {
-  "name": "next-firebase-starter",
+  "name": "bangazon-hhpw",
   "private": true,
   "version": "1.0.0",
-  "author": "Trinity Christiana",
+  "author": "David Poole",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
