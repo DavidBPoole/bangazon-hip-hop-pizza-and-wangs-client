@@ -20,3 +20,12 @@ a {
 body {
   background-color: #88effd;
 }
+
+#welcome-msg {
+  margin-bottom: 30%
+ }
+ 
+ .home-btn {
+   margin: 3.5%;
+   width: 100%;
+ }
