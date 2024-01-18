@@ -22,10 +22,41 @@ body {
 }
 
 #welcome-msg {
-  margin-bottom: 30%
+  margin-bottom: 20%
  }
  
  .home-btn {
    margin: 3.5%;
    width: 100%;
  }
+/* Optionally, adjust the width of the container if needed */
+.order-cards {
+  max-width: 100px;
+  margin: 0 auto;
+}
+
+/* Flex container for order cards */
+.order-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 200%;
+}
+
+/* Style for individual order card */
+.order-card {
+  width: 25rem;
+  margin: 20px;
+}
+
+.orders {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+  max-width: 100%; 
+  margin: 0 auto;
+}
+
+.container {
+  max-width: 70%;
+}
