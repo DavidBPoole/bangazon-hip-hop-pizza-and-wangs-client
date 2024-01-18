@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import { signIn } from '../utils/auth';
@@ -17,9 +18,10 @@ function Signin() {
         paddingBlock: '0 5rem',
       }}
     >
-      <h1>Hi there!</h1>
-      <p>Click the button below to login!</p>
-      <Button type="button" size="lg" className="copy-btn" onClick={signIn}>
+      <div className="signin-logo">
+        <img src="/HHPWLogo.png" style={{ marginBottom: 20 }} width="20%" height="auto" alt="icon" className="nav-logo" />
+      </div>
+      <Button type="button" size="lg" className="signin-btn" onClick={signIn}>
         Sign In
       </Button>
     </div>
