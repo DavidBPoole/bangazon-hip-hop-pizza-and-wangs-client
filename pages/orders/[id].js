@@ -73,26 +73,27 @@ function OrderDetails() {
   };
 
   useEffect(() => {
-    let isMounted = true; // Flag to track component mount status
+    const abortController = new AbortController();
 
-    if (id) {
-      getSingleOrder(id)
-        .then((data) => {
-          if (isMounted) {
-            setOrder(data);
-          }
-        })
-        .catch((error) => {
+    const fetchData = async () => {
+      try {
+        if (id) {
+          const data = await getSingleOrder(id, { signal: abortController.signal });
+          setOrder(data);
+        }
+      } catch (error) {
+        if (!abortController.signal.aborted) {
           console.error('Error fetching order details:', error);
-        });
+        }
+      }
+    };
 
-      return () => {
-        // Cleanup function to run when component is unmounted
-        isMounted = false;
-      };
-    }
+    fetchData();
 
-    // No value returned here, resolving the ESLint warning
+    return () => {
+      // Cleanup function to run when component is unmounted
+      abortController.abort();
+    };
   }, [id]);
 
   return (
