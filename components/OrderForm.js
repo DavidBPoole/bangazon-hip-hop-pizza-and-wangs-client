@@ -6,7 +6,6 @@ import { createOrder, updateOrder } from '../utils/data/OrderData';
 import { useAuth } from '../utils/context/authContext';
 
 const initialState = {
-  // id: 0,
   name: '',
   phone: '',
   email: '',
@@ -43,31 +42,6 @@ const OrderForm = ({ orderObj }) => {
     }));
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     // Validation check for order type
-  //     if (!currentOrder.type) {
-  //       setSubmissionError('Please select an order type.');
-  //       return;
-  //     }
-
-  //     if (orderObj.id) {
-  //       await updateOrder(currentOrder, user.uid);
-  //     } else {
-  //       const createdOrder = await createOrder(currentOrder, user.uid);
-  //       const orderId = createdOrder.id;
-  //       router.push(`/orders/${orderId}`);
-  //     }
-  //     // Fetch order details after the order is updated or created
-  //     getSingleOrder(orderObj);
-  //     setSubmissionError(null); // Reset error state on successful submission
-  //   } catch (error) {
-  //     console.error('Error submitting the order:', error);
-  //     setSubmissionError('An error occurred while submitting the order. Please try again.');
-  //   }
-  // };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (orderObj.id) {
@@ -91,23 +65,23 @@ const OrderForm = ({ orderObj }) => {
 
   return (
     <>
-      <h3>{orderObj.id ? 'Update Order' : 'Create Order'}</h3>
+      <h2 className="form-header">{orderObj.id ? 'Update Order' : 'Create Order'}</h2>
       {/* {submissionError && <p className="text-danger">{submissionError}</p>} Render error message if exists */}
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
-          <Form.Label>Customer Name / Order Name</Form.Label>
-          <Form.Control name="name" required value={currentOrder.name} onChange={handleChange} />
+          <Form.Label className="form-text">Customer Name / Order Name</Form.Label>
+          <Form.Control name="name" placeholder="enter your name" required value={currentOrder.name} onChange={handleChange} />
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>Customer Phone</Form.Label>
-          <Form.Control name="phone" required value={currentOrder.phone} onChange={handleChange} />
+          <Form.Label className="form-text">Customer Phone</Form.Label>
+          <Form.Control name="phone" placeholder="enter your phone #" required value={currentOrder.phone} onChange={handleChange} />
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>Customer Email</Form.Label>
-          <Form.Control name="email" required value={currentOrder.email} onChange={handleChange} />
+          <Form.Label className="form-text">Customer Email</Form.Label>
+          <Form.Control name="email" placeholder="enter your email" required value={currentOrder.email} onChange={handleChange} />
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>Order Type</Form.Label>
+          <Form.Label className="form-text">Order Type</Form.Label>
           <Form.Select name="type" required value={currentOrder.type} onChange={handleChange}>
             <option value="">Select Order Type</option>
             <option value="In-Person">In-Person</option>

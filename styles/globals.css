@@ -18,11 +18,13 @@ a {
 }
 
 body {
-  background-color: #88effd;
+  /* background-color: #88effd; */
+  background-color: rgb(94, 109, 139);
 }
 
 #welcome-msg {
-  margin-bottom: 20%
+  margin-bottom: 20%;
+  color: white;
  }
  
  .home-btn {
@@ -57,6 +59,26 @@ body {
   margin: 0 auto;
 }
 
+.order-text {
+  color: whitesmoke;
+  font-weight: normal;
+}
+
+.form-header {
+  color: whitesmoke;
+}
+
+.form-text {
+  color: whitesmoke;
+}
+
 .container {
   max-width: 70%;
+}
+
+.item-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: 20px; /* Adjusts the gap/margin between cards */
+  margin-top: 2rem;
 }
