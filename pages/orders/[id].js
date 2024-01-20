@@ -106,9 +106,9 @@ function OrderDetails() {
                 {errorMessage}
               </Alert>
             )}
-            <h2><b>Order #: {order.id}</b></h2>
-            <h2><b>Order Name: {order.name}</b></h2>
-            <h2><b>Total: ${calculateOrderTotal()}</b></h2>
+            <h2 className="order-text"><b>Order #: {order.id}</b></h2>
+            <h2 className="order-text"><b>Order Name: {order.name}</b></h2>
+            <h2 className="order-text"><b>Total: ${calculateOrderTotal()}</b></h2>
           </div>
           <div>
             <Button variant="primary" onClick={handleAddItem}>
@@ -122,10 +122,8 @@ function OrderDetails() {
             </Button>
           </div>
           <div className="item-cards">
-
-&nbsp;
             {order.items && order.items.map((item) => (
-              <Card key={item.id} style={{ width: '18rem', marginBottom: '10px' }}>
+              <Card key={item.id} className="item-card" style={{ width: '18rem', marginBottom: '10px' }}>
                 <Card.Body>
                   <Card.Title>{item.name}</Card.Title>
                   <Card.Text>
