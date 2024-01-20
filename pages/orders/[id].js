@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
@@ -5,13 +6,15 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import { Alert } from 'react-bootstrap';
 import ItemSelectionModal from '../../components/ItemModal';
-import { getSingleOrder, removeOrderItem, updateOrder } from '../../utils/data/OrderData';
+import PaymentModal from '../../components/PaymentModal';
+import { getSingleOrder, removeOrderItem } from '../../utils/data/OrderData';
 
 function OrderDetails() {
   const router = useRouter();
   const { id } = router.query;
   const [order, setOrder] = useState({});
   const [showModal, setShowModal] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
   const getOrderDetails = () => {
@@ -20,19 +23,18 @@ function OrderDetails() {
         .then((data) => setOrder(data))
         .catch((error) => {
           console.error('Error fetching order details:', error);
-          // Handle error as needed
         });
     }
   };
 
   const removeItem = (itemId) => {
-    // Check if the order is closed
+    // Checks if the order is closed
     if (!order.open) {
       setErrorMessage('Cannot remove an item from a closed order.');
       return;
     }
     removeOrderItem(order.id, itemId).then(() => {
-      setErrorMessage(null); // Reset error message
+      setErrorMessage(null); // Resets error message
       getOrderDetails();
     });
   };
@@ -46,23 +48,51 @@ function OrderDetails() {
   };
 
   const handleAddItem = () => {
+    // Check if the order is already closed
+    if (!order.open) {
+      setErrorMessage('Cannot add an item to a closed order.');
+      return;
+    }
     // Show the modal when the "Add Item" button is clicked
     setShowModal(true);
   };
 
   const handleCloseOrder = () => {
-    updateOrder({ ...order, open: false }).then(() => {
-      // Navigate to the payment route first
-      router.push(`/orders/${order.id}/payment`);
-      // Fetch order details after the order is updated
-      getOrderDetails();
-    });
+    // Check if the order is already closed
+    if (!order.open) {
+      setErrorMessage('This order is already closed.');
+      return;
+    }
+    // Show the PaymentModal when the "Go To Payment" button is clicked
+    setShowPaymentModal(true);
+  };
+
+  const handlePaymentSuccess = () => {
+    getOrderDetails();
+    router.push('/orders');
   };
 
   useEffect(() => {
+    let isMounted = true; // Flag to track component mount status
+
     if (id) {
-      getOrderDetails();
+      getSingleOrder(id)
+        .then((data) => {
+          if (isMounted) {
+            setOrder(data);
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching order details:', error);
+        });
+
+      return () => {
+        // Cleanup function to run when component is unmounted
+        isMounted = false;
+      };
     }
+
+    // No value returned here, resolving the ESLint warning
   }, [id]);
 
   return (
@@ -72,15 +102,28 @@ function OrderDetails() {
           <div>
             {/* Render error message as an alert */}
             {errorMessage && (
-            <Alert variant="danger" className="text-center">
-              {errorMessage}
-            </Alert>
+              <Alert variant="danger" className="text-center" style={{ backgroundColor: '#f8d7da', color: '#721c24' }}>
+                {errorMessage}
+              </Alert>
             )}
             <h2><b>Order #: {order.id}</b></h2>
             <h2><b>Order Name: {order.name}</b></h2>
             <h2><b>Total: ${calculateOrderTotal()}</b></h2>
           </div>
           <div>
+            <Button variant="primary" onClick={handleAddItem}>
+              Add Item
+            </Button>
+
+&nbsp;
+&nbsp;
+            <Button variant="success" onClick={handleCloseOrder}>
+              Go To Payment
+            </Button>
+          </div>
+          <div className="item-cards">
+
+&nbsp;
             {order.items && order.items.map((item) => (
               <Card key={item.id} style={{ width: '18rem', marginBottom: '10px' }}>
                 <Card.Body>
@@ -95,14 +138,6 @@ function OrderDetails() {
               </Card>
             ))}
           </div>
-          <div>
-            <Button variant="primary" onClick={handleAddItem}>
-              Add Item
-            </Button>
-            <Button variant="success" onClick={handleCloseOrder}>
-              Go To Payment
-            </Button>
-          </div>
           {/* Render the modal if showModal is true */}
           {showModal && (
             <ItemSelectionModal
@@ -110,6 +145,16 @@ function OrderDetails() {
               onHide={() => setShowModal(false)}
               orderId={order.id}
               onItemAdded={getOrderDetails} // Refresh order details after adding an item
+            />
+          )}
+          {/* Render the PaymentModal if showPaymentModal is true */}
+          {showPaymentModal && (
+            <PaymentModal
+              show={showPaymentModal}
+              onHide={() => setShowPaymentModal(false)}
+              orderId={order.id}
+              onPaymentSuccess={handlePaymentSuccess}
+              subtotal={parseFloat(calculateOrderTotal())} // Converts to number
             />
           )}
         </>

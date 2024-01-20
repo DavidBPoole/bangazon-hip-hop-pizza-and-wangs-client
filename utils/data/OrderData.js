@@ -77,6 +77,24 @@ const removeOrderItem = (orderId, orderItemId) => fetch(`${clientCredentials.dat
   method: 'DELETE',
 }).then(() => {});
 
+const closeOrder = (orderId, uid) => new Promise((resolve, reject) => {
+  fetch(`${clientCredentials.databaseURL}/orders/${orderId}/close_order`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `${uid}`,
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(resolve)
+    .catch(reject);
+});
+
 export {
   getOrders,
   getSingleOrder,
@@ -85,4 +103,5 @@ export {
   deleteOrder,
   addOrderItem,
   removeOrderItem,
+  closeOrder,
 };

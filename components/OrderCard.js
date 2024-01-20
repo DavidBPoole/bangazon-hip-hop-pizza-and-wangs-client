@@ -28,6 +28,8 @@ export default function OrderCard({ orderObj, onUpdate }) {
             <Link href={`/orders/${orderObj.id}`} passHref>
               <Button variant="primary" as="a">Details</Button>
             </Link>
+
+&nbsp;
             <Button
               variant="warning"
               onClick={() => {
@@ -35,6 +37,8 @@ export default function OrderCard({ orderObj, onUpdate }) {
               }}
             >Edit
             </Button>
+
+&nbsp;
             <Button variant="danger" onClick={deleteThisOrder}>Delete</Button>
           </Card.Body>
         </Card>
