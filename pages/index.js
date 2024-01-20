@@ -26,11 +26,11 @@ function Home() {
           Create Order
         </Button>
       </Link>
-      {/* <Link href="/revenue" passHref> */}
-      <Button variant="warning" type="button" size="lg" className="home-btn">
-        View Revenue
-      </Button>
-      {/* </Link> */}
+      <Link href="/revenue" passHref>
+        <Button variant="warning" type="button" size="lg" className="home-btn">
+          View Revenue
+        </Button>
+      </Link>
     </div>
   );
 }

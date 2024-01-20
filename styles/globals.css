@@ -82,3 +82,7 @@ body {
   gap: 20px; /* Adjusts the gap/margin between cards */
   margin-top: 2rem;
 }
+
+.revenue-text {
+  color: whitesmoke;
+}

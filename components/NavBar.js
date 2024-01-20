@@ -29,6 +29,9 @@ export default function NavBar() {
             <Link passHref href="/orders/new">
               <Nav.Link>Create Order</Nav.Link>
             </Link>
+            <Link passHref href="/revenue">
+              <Nav.Link>View Revenue</Nav.Link>
+            </Link>
           </Nav>
           <Nav className="ms-auto"> {/* 'ms-auto' pushes the items to the right */}
             <Button variant="danger" onClick={signOut} style={{ fontSize: 12 }}>
