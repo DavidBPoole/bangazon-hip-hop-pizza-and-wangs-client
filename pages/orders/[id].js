@@ -1,6 +1,6 @@
 /* eslint-disable consistent-return */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
@@ -16,11 +16,16 @@ function OrderDetails() {
   const [showModal, setShowModal] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+  const isMounted = useRef(true);
 
   const getOrderDetails = () => {
     if (id) {
       getSingleOrder(id)
-        .then((data) => setOrder(data))
+        .then((data) => {
+          if (isMounted.current) {
+            setOrder(data);
+          }
+        })
         .catch((error) => {
           console.error('Error fetching order details:', error);
         });
@@ -73,18 +78,18 @@ function OrderDetails() {
   };
 
   useEffect(() => {
-    const abortController = new AbortController();
+    isMounted.current = true;
 
     const fetchData = async () => {
       try {
         if (id) {
-          const data = await getSingleOrder(id, { signal: abortController.signal });
-          setOrder(data);
+          const data = await getSingleOrder(id);
+          if (isMounted.current) {
+            setOrder(data);
+          }
         }
       } catch (error) {
-        if (!abortController.signal.aborted) {
-          console.error('Error fetching order details:', error);
-        }
+        console.error('Error fetching order details:', error);
       }
     };
 
@@ -92,7 +97,7 @@ function OrderDetails() {
 
     return () => {
       // Cleanup function to run when component is unmounted
-      abortController.abort();
+      isMounted.current = false;
     };
   }, [id]);
 
@@ -107,17 +112,38 @@ function OrderDetails() {
                 {errorMessage}
               </Alert>
             )}
-            <h2 className="order-text"><b>Order #: {order.id}</b></h2>
-            <h2 className="order-text"><b>Order Name: {order.name}</b></h2>
-            <h2 className="order-text"><b>Total: ${calculateOrderTotal()}</b></h2>
+            <h2 className="order-id"><b>Order #: {order.id}</b></h2>
+            <h4 className="order-text"><b>Order Name: {order.name}</b></h4>
+            <h4 className="order-text"><b>Order Phone: {order.phone}</b></h4>
+            <h4 className="order-text"><b>Order Email: {order.email}</b></h4>
+            <h4 className="order-text"><b>Order Type: {order.type}</b></h4>
+            <h4 className="order-text"><b>Order Status: {order.open ? 'Open 🟢' : 'Closed 🔴'}</b></h4>
+            <h2 className="order-total"><b>Total: ${calculateOrderTotal()}</b></h2>
+            &nbsp;
+            {/* Card below throws a descendant error for h and p tags */}
+            {/* <Card style={{ width: '30rem' }}>
+              <Card.Body>
+                <Card.Title><h1 className="order-id">Order #: {order.id}</h1></Card.Title>
+                <Card.Text>
+                  <h4 className="order-text"><b>Order Name: {order.name}</b></h4>
+                  <h4 className="order-text"><b>Order Phone: {order.phone}</b></h4>
+                  <h4 className="order-text"><b>Order Email: {order.email}</b></h4>
+                  <h4 className="order-text"><b>Order Type: {order.type}</b></h4>
+                  <h4 className="order-text"><b>Order Status: {order.open ? 'Open 🟢' : 'Closed 🔴'}</b></h4>
+                </Card.Text>
+                <Card.Text>
+                  <h2 className="order-total"><b>Total: ${calculateOrderTotal()}</b></h2>
+                </Card.Text>
+              </Card.Body>
+            </Card> */}
+            &nbsp;
           </div>
           <div>
             <Button variant="primary" onClick={handleAddItem}>
               Add Item
             </Button>
-
-&nbsp;
-&nbsp;
+            &nbsp;
+            &nbsp;
             <Button variant="success" onClick={handleCloseOrder}>
               Go To Payment
             </Button>
