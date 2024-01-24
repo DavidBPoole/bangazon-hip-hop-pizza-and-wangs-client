@@ -3,6 +3,9 @@
 # Overview
 A point of sale application designed as a mock up request for a restaurant client needing to update and streamline the order taking and processing capacity of their business model to enhance revenue and profits.
 
+#Entity Relationship Diagram
+[ERD](https://dbdiagram.io/d/Bangazon-HHPandW-6594c436ac844320ae21eaed)
+
 # Process Flow
 [Wireframes](https://www.figma.com/file/2M4352Jkh7hRCVAqSv7ek9/Bangazon---Hip-Hop-Pizza-%26-Wangs?type=whiteboard&node-id=0-1&t=WfSsGiIgjwbFTRj5-0)
 
