@@ -3,7 +3,7 @@
 # Overview
 A point of sale application designed as a mock up request for a restaurant client needing to update and streamline the order taking and processing capacity of their business model to enhance revenue and profits.
 
-#Entity Relationship Diagram
+# Entity Relationship Diagram
 [ERD](https://dbdiagram.io/d/Bangazon-HHPandW-6594c436ac844320ae21eaed)
 
 # Process Flow
